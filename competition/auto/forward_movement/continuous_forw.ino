@@ -6,8 +6,8 @@
 #define R_IN2 4
 #define R_PWM 6
 
-#define L_ENC 2   // must be interrupt-capable
-#define R_ENC 3   // must be interrupt-capable
+#define L_ENC 2   
+#define R_ENC 3   
 
 // ===== Encoder & RPM =====
 volatile long L_pulses=0, R_pulses=0;
