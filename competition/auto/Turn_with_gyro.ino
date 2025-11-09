@@ -1,10 +1,5 @@
  #include <Wire.h>
 
-// ============================================
-// BMI160 + Motor Control for 90° Turn
-// ============================================
-
-// --- Motor driver pins (edit to your wiring) ---
 #define L_IN1 11
 #define L_IN2 12
 #define L_PWM 10
@@ -172,13 +167,13 @@ void loop() {
   Serial.print("Angle = ");
   Serial.println(gyro.angle);
 
-  // Turn until ~90 degrees reached
+ 
   if (abs(gyro.angle) < 90.0) {
-    turnRight(150); // adjust PWM as needed
+    turnRight(150); 
   } else {
     stopMotors();
     Serial.println("Turn complete!");
-    while (1);  // stop forever
+    while (1);  
   }
 
   delay(10);
