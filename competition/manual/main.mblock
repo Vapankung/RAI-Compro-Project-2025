@@ -1,9 +1,10 @@
+
 import mbot2
 import gamepad
 import time
 import math
 
-# ================== General Setup ==================
+# set up
 S1_MIN, S1_MAX = 0, 180
 S1_UNIT = 10
 S1_STEP = 2
@@ -18,17 +19,15 @@ s1_angle = 0
 s1_target = None
 x = 0
 
-# ================== DC Motor Setup ==================
+# DC motor'sset up
 speed_m1 = 40
 speed_m2 = 100
 speed_step = 10
 max_speed = 200
 min_speed = -200
 
-
 def clamp(v, lo, hi):
     return max(lo, min(hi, v))
-
 
 def apply_s23(xval):
     a2 = clamp(CENTER + xval, 0, 180)
@@ -36,20 +35,16 @@ def apply_s23(xval):
     mbot2.servo_set(int(a2), "S2")
     mbot2.servo_set(int(a3), "S3")
 
-
 mbot2.servo_set(s1_angle, "S1")
 apply_s23(x)
-
 
 def set_motors(m1, m2):
     mbot2.motor_set(int(m1), "M1")
     mbot2.motor_set(int(m2), "M2")
 
-
-# ================== Main Loop ==================
+# Loop
 while True:
     ly = gamepad.get_joystick('Ly')
-
     if ly > S1_DEADZONE:
         nxt = math.ceil(s1_angle / S1_UNIT) * S1_UNIT
         if nxt == s1_angle:
@@ -77,29 +72,12 @@ while True:
         x = clamp(x - MIRROR_STEP, -SPAN, SPAN)
         apply_s23(x)
 
-    # ========== Encoder Motor ==========
+    # Encoder motor
     if gamepad.is_key_pressed('N1'):
         mbot2.EM_turn(-360, 60, "EM1")
         time.sleep(0.25)
 
-    if gamepad.is_key_pressed('N2'):
-        speed_m1 = clamp(speed_m1 + speed_step, min_speed, max_speed)
-        print("M1 Speed:", speed_m1)
-        time.sleep(0.2)
-    if gamepad.is_key_pressed('N3'):
-        speed_m1 = clamp(speed_m1 - speed_step, min_speed, max_speed)
-        print("M1 Speed:", speed_m1)
-        time.sleep(0.2)
-    if gamepad.is_key_pressed('N4'):
-        speed_m2 = clamp(speed_m2 + speed_step, min_speed, max_speed)
-        print("M2 Speed:", speed_m2)
-        time.sleep(0.2)
-    if gamepad.is_key_pressed('N5'):
-        speed_m2 = clamp(speed_m2 - speed_step, min_speed, max_speed)
-        print("M2 Speed:", speed_m2)
-        time.sleep(0.2)
-
-    # ========== Movement Controls ==========
+    #movement
     if gamepad.is_key_pressed('Up'):
         set_motors(-speed_m1, -speed_m2)
     elif gamepad.is_key_pressed('Down'):
